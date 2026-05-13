@@ -61,38 +61,128 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 
 # System Workflow
 
-```text
-Patient fills Healthcare Form
-            ↓
-n8n Workflow Triggered
-            ↓
-Patient Data Stored in Google Sheets
-            ↓
-Confirmation Email Sent Automatically
-```
+┌──────────────────────────────────────────────────────────┐
+│                    Healthcare Appointment System         │
+└──────────────────────────────────────────────────────────┘
+
+        Patient Submits Appointment Form
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│ 1. Form Submission Trigger                              │
+│    - Collect patient details                            │
+│    - Name, Email, Phone, Symptoms, Date                 │
+└──────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│ 2. Google Sheets Database                               │
+│    - Store patient records                              │
+│    - Maintain appointment history                       │
+└──────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│ 3. Data Processing (Edit Fields Node)                   │
+│    - Clean and structure input data                     │
+│    - Prepare AI prompt                                  │
+└──────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│ 4. AI Decision Engine                                   │
+│    OpenAI Chat Model + Basic LLM Chain                  │
+│    - Analyze symptoms                                   │
+│    - Determine approval/rejection                       │
+└──────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│ 5. Decision Validation (IF Node)                        │
+│    Check AI response                                    │
+└───────────────────────┬──────────────────────────────────┘
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+          ▼                           ▼
+
+┌──────────────────────┐   ┌──────────────────────┐
+│ 6A. Approved Flow    │   │ 6B. Rejected Flow    │
+└──────────┬───────────┘   └──────────┬───────────┘
+           │                          │
+           ▼                          ▼
+
+┌──────────────────────┐   ┌──────────────────────┐
+│ Gmail Notification   │   │ Gmail Notification   │
+│ Approval Email Sent  │   │ Rejection Email Sent │
+└──────────┬───────────┘   └──────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────────────────────────────┐
+│ 7. Google Calendar Integration                          │
+│    - Create appointment event                           │
+│    - Add patient details                                │
+│    - Schedule meeting automatically                     │
+└──────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│                 Appointment Successfully Managed         │
+└──────────────────────────────────────────────────────────┘
 
 ---
 
 # Architecture Diagram
 
-```text
-┌────────────────────┐
-│ Healthcare Form    │
-└─────────┬──────────┘
-          ↓
-┌────────────────────┐
-│ n8n Workflow       │
-└─────────┬──────────┘
-          ↓
-┌────────────────────┐
-│ Google Sheets      │
-│ Patient Database   │
-└─────────┬──────────┘
-          ↓
-┌────────────────────┐
-│ Gmail Notification │
-└────────────────────┘
-```
+                    ┌─────────────────────┐
+                    │  Patient Form       │
+                    │ (Form Submission)   │
+                    └─────────┬───────────┘
+                              │
+                              ▼
+                    ┌─────────────────────┐
+                    │ Google Sheets       │
+                    │ Store Patient Data  │
+                    └─────────┬───────────┘
+                              │
+                              ▼
+                    ┌─────────────────────┐
+                    │ Edit Fields         │
+                    │ Prepare AI Prompt   │
+                    └─────────┬───────────┘
+                              │
+                              ▼
+                    ┌─────────────────────┐
+                    │ OpenAI Chat Model   │
+                    │ AI Decision Engine  │
+                    └─────────┬───────────┘
+                              │
+                              ▼
+                    ┌─────────────────────┐
+                    │ Basic LLM Chain     │
+                    │ Analyze Symptoms    │
+                    └─────────┬───────────┘
+                              │
+                              ▼
+                    ┌─────────────────────┐
+                    │ IF Condition        │
+                    │ Approved/Rejection  │
+                    └──────┬───────┬──────┘
+                           │       │
+                    TRUE   │       │ FALSE
+                           │       │
+                           ▼       ▼
+
+              ┌─────────────────┐   ┌─────────────────┐
+              │ Gmail Node      │   │ Gmail Node      │
+              │ Approval Email  │   │ Rejection Email │
+              └────────┬────────┘   └─────────────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │ Google Calendar │
+              │ Create Event    │
+              └─────────────────┘
 
 ---
 
