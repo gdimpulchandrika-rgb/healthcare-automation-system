@@ -1,0 +1,431 @@
+{
+  "name": "Healthcare Appointment Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Healthcare Appointment Form",
+        "formDescription": "Book your healthcare appointment easily.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Doctor"
+            },
+            {
+              "fieldLabel": "Appointment Date",
+              "fieldType": "date"
+            },
+            {
+              "fieldLabel": "Symptoms",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "257173df-0f35-4ab9-a646-91398121027d",
+      "name": "On form submission",
+      "webhookId": "a9aa21b9-7a34-405d-a7c3-5426a130bf05"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1FRIw0eNcgUkjmrwgFpG3dZjfwjG-T_bnOGrLHo8clDk",
+          "mode": "list",
+          "cachedResultName": "Patients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FRIw0eNcgUkjmrwgFpG3dZjfwjG-T_bnOGrLHo8clDk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FRIw0eNcgUkjmrwgFpG3dZjfwjG-T_bnOGrLHo8clDk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NAME": "={{ $json.Name }}",
+            "E-MAIL": "={{ $json.Email }}",
+            "DATE": "={{ $json['Appointment Date'] }}",
+            "DOCTOR": "={{ $json.Doctor }}",
+            "SYMPTOMS": "={{ $json.Symptoms }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "NAME",
+              "displayName": "NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "E-MAIL",
+              "displayName": "E-MAIL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DOCTOR",
+              "displayName": "DOCTOR",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DATE",
+              "displayName": "DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SYMPTOMS",
+              "displayName": "SYMPTOMS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "47721c33-ae30-4cfa-9151-788b3dd76c2f",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "A73sB0rEfvH8gh83",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "gdimpulchandrika@gmail.com",
+        "subject": "Appointment Confirmation",
+        "emailType": "text",
+        "message": "=URGENT HEALTH ALERT\n\nPatient Name: {{ $('Append row in sheet').item.json.NAME }}\n\nThe AI system detected a HIGH priority health condition.\n\nSymptoms:{{ $('Append row in sheet').item.json.SYMPTOMS }}\n\nImmediate medical consultation is recommended.\n\nThis is an automated AI-generated alert.\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        -144
+      ],
+      "id": "893aac4b-66c4-4f5f-87e7-feff894f167c",
+      "name": "Send a message",
+      "webhookId": "aad816d9-8105-4f98-aea9-bc445cfb008e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WlSXSUErY9Bpjapc",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a healthcare assistant.\n\nAnalyze these symptoms:\n{{ $json.SYMPTOMS }}\n\nProvide:\n1. Possible condition\n2. Severity\n3. Recommendations\n4. Priority:\n   - Low\n   - Medium\n   - High\n\nKeep the response short and simple.\n\nAdd disclaimer:\n\"This is not professional medical advice.\"",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        576,
+        0
+      ],
+      "id": "4c550f1e-2ae7-4f7e-ac92-993465ed8f69",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        832,
+        192
+      ],
+      "id": "96cc3c90-7bf4-42f6-86a8-4ac44464a7fd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "sPHcfhKPJjZ607dY",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "427441fb-9f45-4589-bfbe-cc292f9caa90",
+              "leftValue": "={{$json[\"text\"]}}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        0
+      ],
+      "id": "82fcaf12-ec17-4d9d-8494-1c3cda9f839e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "gdimpulchandrika@gmail.com",
+        "subject": "AI Healthcare Analysis Report",
+        "message": "=Hello {{ $('Append row in sheet').item.json.NAME }},\n\nYour symptom analysis has been completed successfully.\n\nThe condition appears to be non-emergency.\n\nRecommendations:\n\n* Rest properly\n* Stay hydrated\n* Monitor symptoms\n\nThank you,\nHealthcare Team\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        128
+      ],
+      "id": "42001756-136e-4446-8fae-ba1094d2e22f",
+      "name": "Send a message1",
+      "webhookId": "d39109c0-2600-4778-831f-f8b292bed479",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WlSXSUErY9Bpjapc",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "gdimpulchandrika@gmail.com",
+          "mode": "list",
+          "cachedResultName": "gdimpulchandrika@gmail.com"
+        },
+        "end": "={{ $('Append row in sheet').item.json.DATE }}",
+        "additionalFields": {
+          "description": "=Patient Symptoms:\n{{ $('Append row in sheet').item.json.SYMPTOMS }}\n\nAI Analysis:\n{{ $json[\"text\"] }}\n\nPriority:\nHigh",
+          "summary": "=Emergency Consultation - {{ $('Append row in sheet').item.json.NAME }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1232,
+        -16
+      ],
+      "id": "0665104b-9506-49c1-88bd-792a0a44b29c",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "C4JKsbuXBGXcuDod",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0528dea0-f01f-445a-932f-f3679b6bf6ee",
+              "name": "=name",
+              "value": "={{ $json.NAME }}",
+              "type": "string"
+            },
+            {
+              "id": "5a6f1c06-7756-47c9-ab20-ddfc309b45ad",
+              "name": "email",
+              "value": "={{ $json['E-MAIL'] }}",
+              "type": "string"
+            },
+            {
+              "id": "8226e02b-f42e-47a2-8d10-d296542e62c5",
+              "name": "data",
+              "value": "={{ $json.DATE }}",
+              "type": "string"
+            },
+            {
+              "id": "267fbe56-5f58-4189-8948-fe9f9f48d0ed",
+              "name": "Doctor name",
+              "value": "={{ $json.DOCTOR }}",
+              "type": "string"
+            },
+            {
+              "id": "afadd1eb-5a8a-43f2-be93-62a14e5db28c",
+              "name": "Symptoms",
+              "value": "={{ $json.SYMPTOMS }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "509ed7de-6773-4fa8-a2ad-0bbd8ffa8629",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1e773a8f-96bf-4c67-8d9c-98f05966ce86",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca31e85b4bff1e1c5a0bd86f564f6efc466b8676c9fc278d7017cf08d1f9589d"
+  },
+  "id": "7UEiN9OEADCmdaG3",
+  "tags": []
+}
