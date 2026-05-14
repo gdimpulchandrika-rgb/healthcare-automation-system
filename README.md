@@ -59,6 +59,7 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 
 ---
 
+
 # System Workflow
 
 ┌──────────────────────────────────────────────────────────┐
@@ -69,37 +70,37 @@ To build an AI-powered healthcare workflow automation system using n8n that:
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│ 1. Form Submission Trigger                              │
-│    - Collect patient details                            │
-│    - Name, Email, Phone, Symptoms, Date                 │
+│ 1. Form Submission Trigger                               │
+│    - Collect patient details                             │
+│    - Name, Email, Phone, Symptoms, Date                  │
 └──────────────────────────────────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│ 2. Google Sheets Database                               │
-│    - Store patient records                              │
-│    - Maintain appointment history                       │
+│ 2. Google Sheets Database                                │
+│    - Store patient records                               │
+│    - Maintain appointment history                        │
 └──────────────────────────────────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│ 3. Data Processing (Edit Fields Node)                   │
-│    - Clean and structure input data                     │
-│    - Prepare AI prompt                                  │
+│ 3. Data Processing (Edit Fields Node)                    │
+│    - Clean and structure input data                      │
+│    - Prepare AI prompt                                   │
 └──────────────────────────────────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│ 4. AI Decision Engine                                   │
-│    OpenAI Chat Model + Basic LLM Chain                  │
-│    - Analyze symptoms                                   │
-│    - Determine approval/rejection                       │
+│ 4. AI Decision Engine                                    │
+│    OpenAI Chat Model + Basic LLM Chain                   │
+│    - Analyze symptoms                                    │
+│    - Determine approval/rejection                        │
 └──────────────────────────────────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│ 5. Decision Validation (IF Node)                        │
-│    Check AI response                                    │
+│ 5. Decision Validation (IF Node)                         │
+│    Check AI response                                     │
 └───────────────────────┬──────────────────────────────────┘
                         │
           ┌─────────────┴─────────────┐
@@ -119,10 +120,10 @@ To build an AI-powered healthcare workflow automation system using n8n that:
            │
            ▼
 ┌──────────────────────────────────────────────────────────┐
-│ 7. Google Calendar Integration                          │
-│    - Create appointment event                           │
-│    - Add patient details                                │
-│    - Schedule meeting automatically                     │
+│ 7. Google Calendar Integration                           │
+│    - Create appointment event                            │
+│    - Add patient details                                 │
+│    - Schedule meeting automatically                      │
 └──────────────────────────────────────────────────────────┘
                            │
                            ▼
