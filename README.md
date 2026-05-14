@@ -67,6 +67,7 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 └──────────────────────────────────────────────────────────┘
 
         Patient Submits Appointment Form
+        
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
@@ -74,6 +75,7 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 │    - Collect patient details                             │
 │    - Name, Email, Phone, Symptoms, Date                  │
 └──────────────────────────────────────────────────────────┘
+
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
@@ -81,6 +83,7 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 │    - Store patient records                               │
 │    - Maintain appointment history                        │
 └──────────────────────────────────────────────────────────┘
+
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
@@ -88,6 +91,7 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 │    - Clean and structure input data                      │
 │    - Prepare AI prompt                                   │
 └──────────────────────────────────────────────────────────┘
+
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
@@ -96,12 +100,14 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 │    - Analyze symptoms                                    │
 │    - Determine approval/rejection                        │
 └──────────────────────────────────────────────────────────┘
+
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
 │ 5. Decision Validation (IF Node)                         │
 │    Check AI response                                     │
-└───────────────────────┬──────────────────────────────────┘
+└───────────────────────┬──────────────────────────────────
+
                         │
           ┌─────────────┴─────────────┐
           │                           │
@@ -125,6 +131,7 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 │    - Add patient details                                 │
 │    - Schedule meeting automatically                      │
 └──────────────────────────────────────────────────────────┘
+
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
