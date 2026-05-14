@@ -108,14 +108,17 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 │    Check AI response                                     │
 └───────────────────────┬──────────────────────────────────
 
+
                         │
           ┌─────────────┴─────────────┐
           │                           │
           ▼                           ▼
+          
 
 ┌──────────────────────┐   ┌──────────────────────┐
 │ 6A. Approved Flow    │   │ 6B. Rejected Flow    │
 └──────────┬───────────┘   └──────────┬───────────┘
+
            │                          │
            ▼                          ▼
 
@@ -123,6 +126,7 @@ To build an AI-powered healthcare workflow automation system using n8n that:
 │ Gmail Notification   │   │ Gmail Notification   │
 │ Approval Email Sent  │   │ Rejection Email Sent │
 └──────────┬───────────┘   └──────────────────────┘
+
            │
            ▼
 ┌──────────────────────────────────────────────────────────┐
@@ -146,36 +150,42 @@ To build an AI-powered healthcare workflow automation system using n8n that:
                     │  Patient Form       │
                     │ (Form Submission)   │
                     └─────────┬───────────┘
+                    
                               │
                               ▼
                     ┌─────────────────────┐
                     │ Google Sheets       │
                     │ Store Patient Data  │
                     └─────────┬───────────┘
+                    
                               │
                               ▼
                     ┌─────────────────────┐
                     │ Edit Fields         │
                     │ Prepare AI Prompt   │
                     └─────────┬───────────┘
+                    
                               │
                               ▼
                     ┌─────────────────────┐
                     │ OpenAI Chat Model   │
                     │ AI Decision Engine  │
                     └─────────┬───────────┘
+                    
                               │
                               ▼
                     ┌─────────────────────┐
                     │ Basic LLM Chain     │
                     │ Analyze Symptoms    │
                     └─────────┬───────────┘
+                    
                               │
                               ▼
                     ┌─────────────────────┐
                     │ IF Condition        │
                     │ Approved/Rejection  │
                     └──────┬───────┬──────┘
+                    
                            │       │
                     TRUE   │       │ FALSE
                            │       │
@@ -185,12 +195,14 @@ To build an AI-powered healthcare workflow automation system using n8n that:
               │ Gmail Node      │   │ Gmail Node      │
               │ Approval Email  │   │ Rejection Email │
               └────────┬────────┘   └─────────────────┘
+              
                        │
                        ▼
               ┌─────────────────┐
               │ Google Calendar │
               │ Create Event    │
               └─────────────────┘
+              
 
 ---
 
